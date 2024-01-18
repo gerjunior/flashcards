@@ -1,4 +1,9 @@
-export const cards = [
+export type Card = {
+  front: string;
+  back: string;
+};
+
+export const cards: Card[] = [
   {
     front: 'What is the rotation interval for AWS-managed KMS keys?',
     back: '1 year',
