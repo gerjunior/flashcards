@@ -54,7 +54,7 @@ export const Main = () => {
       </div>
       <div className="flex flex-col justify-center items-center mt-10">
         <CardFlip card={cards[currentCard]} shouldAnimate={shouldAnimate} handleClick={handleClickCard} isFlipped={isFlipped} />
-        <div className="flex flex-row justify-center items-center pt-10 space-x-4">
+        <div className="flex flex-row justify-center items-center mt-20 space-x-4">
           <Button text="prev" onClick={handleClickPrev} />
           <Button text="next" onClick={handleClickNext} />
         </div>
