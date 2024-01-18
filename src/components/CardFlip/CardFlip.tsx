@@ -11,12 +11,7 @@ type CardFlipProps = {
 export const CardFlip = ({ card, shouldAnimate, handleClick, isFlipped }: CardFlipProps) => {
   return (
     <div className="w-96 h-56 m-4 scale-150">
-      <div
-        className={`card ${shouldAnimate ? 'transform transition-transform duration-700 ease-in-out' : ''} ${
-          isFlipped ? 'rotate-y-180' : ''
-        }`}
-        onClick={handleClick}
-      >
+      <div className={`card ${shouldAnimate ? 'duration-700 ease-in-out' : ''} ${isFlipped ? 'rotate-y-180' : ''}`} onClick={handleClick}>
         <div className="front absolute w-full h-full bg-slate-800 rounded shadow-lg flex items-center justify-center p-10">
           {card.front}
         </div>
