@@ -47,6 +47,11 @@ export const Main = () => {
           This is a flashcard app for the AWS Certified Developer Associate (DVA-C02) exam. It is built with React and Tailwind CSS.
         </p>
       </div>
+      <div>
+        <p className="text-2xl font-bold mb-4">
+          {currentCard + 1} of {cards.length}
+        </p>
+      </div>
       <div className="flex flex-col justify-center items-center mt-10">
         <CardFlip card={cards[currentCard]} shouldAnimate={shouldAnimate} handleClick={handleClickCard} isFlipped={isFlipped} />
         <div className="flex flex-row justify-center items-center pt-10 space-x-4">
