@@ -1,6 +1,9 @@
+import LambdaHandlerImage from '../assets/lambda_handler.png'
+
 export type Card = {
   front: string;
   back: string;
+  image?: string;
   category: 'development' | 'security' | 'database';
 };
 
@@ -67,4 +70,10 @@ using the default concurrency limit?`,
     back: '900',
     category: 'development',
   },
+  {
+    front: `Is the following Lambda function following good practices in terms of client initialization?`,
+    back: 'Yes. The client is initialized outside of the handler function.',
+    category: 'development',
+    image: LambdaHandlerImage,
+  }
 ];

@@ -18,8 +18,14 @@ export const CardFlip = ({ card, shouldAnimate, handleClick, isFlipped }: CardFl
   return (
     <div className="w-96 h-56 m-4 scale-150">
       <div className={`card ${shouldAnimate ? 'duration-700 ease-in-out' : ''} ${isFlipped ? 'rotate-y-180' : ''}`} onClick={handleClick}>
-        <div className={`front absolute w-full h-full ${colorMap[card.category]} rounded shadow-lg flex items-center justify-center p-10`}>
+        <div className={`front absolute w-full h-full ${colorMap[card.category]} rounded shadow-lg flex items-center justify-evenly p-10`}>
           {card.front}
+          {card.image && (
+            <div className="ml-8">
+              <img src={card.image} alt={card.front} className="scale-150" />
+            </div>
+            )
+          }
         </div>
         <div
           className={`back absolute w-full h-full ${
