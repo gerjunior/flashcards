@@ -4,6 +4,7 @@ import { Button } from '../components/Button/Button';
 import { CardFlip } from '../components/CardFlip/CardFlip';
 import { cards } from '../data/source';
 import { Input } from "../components/Input/Input.tsx";
+import { getLongestStreak } from "../utils/localStorage.ts";
 
 export const Main = () => {
   const [currentCard, setCurrentCard] = useState(0);
@@ -12,10 +13,12 @@ export const Main = () => {
   const [input, setInput] = useState('');
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
   const [streak, setStreak] = useState(0)
+  const [longestStreak, _setLongestStreak] = useState(getLongestStreak())
 
-  const handleClickCard = () => {
-    setIsFlipped(!isFlipped);
-  };
+  const setLongestStreak = (streak: number) => {
+    _setLongestStreak(streak)
+    localStorage.setItem('longestStreak', streak.toString())
+  }
 
   const clearCard = () => {
     setIsCorrect(null)
@@ -26,6 +29,10 @@ export const Main = () => {
       setShouldAnimate(true);
     }, 1);
   }
+
+  const handleClickCard = () => {
+    setIsFlipped(!isFlipped);
+  };
 
   const handleClickNext = () => {
     clearCard()
@@ -60,6 +67,9 @@ export const Main = () => {
     if (fuzzyMatch > 0.8) {
       setIsCorrect(true)
       setStreak(streak + 1)
+      if (streak + 1 > longestStreak) {
+        setLongestStreak(streak + 1)
+      }
       return
     }
 
@@ -86,10 +96,14 @@ export const Main = () => {
           Tailwind CSS.
         </p>
       </div>
-      <div>
+      <div className="flex justify-center">
+        <p className="text-2xl font-bold mb-4 mr-20">
+          Current streak: <span
+          className={ `text-2xl font-bold text-${ streakColor }-500 ` }>{ streak }</span>
+        </p>
         <p className="text-2xl font-bold mb-4">
-          Streak: <span
-          className={ `text-2xl font-bold text-${streakColor}-500 `}>{ streak }</span>
+          Longest streak: <span
+          className={ `text-2xl font-bold text-green-500 ` }>{ longestStreak }</span>
         </p>
       </div>
       <div className="flex flex-col justify-center items-center mt-10">
