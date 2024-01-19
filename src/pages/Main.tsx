@@ -11,6 +11,7 @@ export const Main = () => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [input, setInput] = useState('');
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null)
+  const [streak, setStreak] = useState(0)
 
   const handleClickCard = () => {
     setIsFlipped(!isFlipped);
@@ -49,14 +50,21 @@ export const Main = () => {
   }
 
   const handlePressEnter = () => {
+    if (input === '' || isFlipped || isCorrect || isCorrect === false) {
+      return
+    }
+
+    setIsFlipped(true)
+
     const fuzzyMatch = fuzzy(input, cards[currentCard].back, { ignoreCase: true, normalizeWhitespace: true });
     if (fuzzyMatch > 0.8) {
       setIsCorrect(true)
-      setIsFlipped(true)
+      setStreak(streak + 1)
       return
     }
 
     setIsCorrect(false)
+    setStreak(0)
   }
 
   const handleClickPickRandom = () => {
@@ -65,7 +73,8 @@ export const Main = () => {
     setCurrentCard(randomCard)
   }
 
-  const highlightColor = isCorrect === true ? 'green' : isCorrect === false ? 'red' : undefined
+  const inputHighlightColor = isCorrect === true ? 'green' : isCorrect === false ? 'red' : undefined
+  const streakColor = streak === 0 ? 'red' : 'green'
 
   return (
     <div className="min-h-full flex flex-col">
@@ -79,7 +88,8 @@ export const Main = () => {
       </div>
       <div>
         <p className="text-2xl font-bold mb-4">
-          { currentCard + 1 } of { cards.length }
+          Streak: <span
+          className={ `text-2xl font-bold text-${streakColor}-500 `}>{ streak }</span>
         </p>
       </div>
       <div className="flex flex-col justify-center items-center mt-10">
@@ -87,14 +97,14 @@ export const Main = () => {
                   isFlipped={ isFlipped }/>
         <div className="mt-16">
           <Input onChange={ handleInputChange } value={ input } placeholder="Type your answer"
-                 onPressEnter={ handlePressEnter } highlightColor={highlightColor}/>
+                 onPressEnter={ handlePressEnter } highlightColor={ inputHighlightColor }/>
         </div>
         <div className="flex flex-row justify-center items-center mt-4 space-x-4">
           <Button text="prev" onClick={ handleClickPrev } color="bg-blue-500"/>
           <Button text="next" onClick={ handleClickNext } color="bg-blue-500"/>
         </div>
         <div className="mt-3">
-          <Button text="pick random" onClick={ handleClickPickRandom } />
+          <Button text="pick random" onClick={ handleClickPickRandom }/>
         </div>
       </div>
     </div>
