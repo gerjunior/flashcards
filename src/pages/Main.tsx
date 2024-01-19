@@ -59,6 +59,12 @@ export const Main = () => {
     setIsCorrect(false)
   }
 
+  const handleClickPickRandom = () => {
+    clearCard()
+    const randomCard = Math.floor(Math.random() * cards.length)
+    setCurrentCard(randomCard)
+  }
+
   const highlightColor = isCorrect === true ? 'green' : isCorrect === false ? 'red' : undefined
 
   return (
@@ -84,8 +90,11 @@ export const Main = () => {
                  onPressEnter={ handlePressEnter } highlightColor={highlightColor}/>
         </div>
         <div className="flex flex-row justify-center items-center mt-4 space-x-4">
-          <Button text="prev" onClick={ handleClickPrev }/>
-          <Button text="next" onClick={ handleClickNext }/>
+          <Button text="prev" onClick={ handleClickPrev } color="bg-blue-500"/>
+          <Button text="next" onClick={ handleClickNext } color="bg-blue-500"/>
+        </div>
+        <div className="mt-3">
+          <Button text="pick random" onClick={ handleClickPickRandom } />
         </div>
       </div>
     </div>
