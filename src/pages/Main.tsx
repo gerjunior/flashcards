@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { fuzzy } from 'fast-fuzzy';
 import { Button } from '../components/Button/Button';
 import { CardFlip } from '../components/CardFlip/CardFlip';
-import { cards } from '../data/source';
+import { cards as _cards } from '../data/source';
 import { Input } from "../components/Input/Input.tsx";
 import { getLongestStreak } from "../utils/localStorage.ts";
 
 export const Main = () => {
+  const [cards, setCards] = useState(_cards);
   const [currentCard, setCurrentCard] = useState(0);
   const [shouldAnimate, setShouldAnimate] = useState(true);
   const [isFlipped, setIsFlipped] = useState(false);
@@ -83,8 +84,26 @@ export const Main = () => {
     setCurrentCard(randomCard)
   }
 
+  const handleClickRemoveFromPool = () => {
+    const newCards = cards.filter((_, index) => index !== currentCard)
+    setCards(newCards)
+    handleClickNext()
+  }
+
   const inputHighlightColor = isCorrect === true ? 'green' : isCorrect === false ? 'red' : undefined
   const streakColor = streak === 0 ? 'red' : 'green'
+
+  if (cards.length === 0) {
+    return (
+      <div>
+        <h1 className="text-4xl font-bold mb-20 mt-8">AWS Certified Developer Associate (DVA-C02) Flashcards</h1>
+        <div className="flex flex-row justify-center items-baseline mt-10">
+          <p className="text-2xl font-bold mb-4 mr-20 text-green-500">You nailed it!</p>
+          <Button text="reset" onClick={() => setCards(_cards)} color="bg-blue-500"/>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-full flex flex-col">
@@ -109,9 +128,12 @@ export const Main = () => {
       <div className="flex flex-col justify-center items-center mt-10">
         <CardFlip card={ cards[currentCard] } shouldAnimate={ shouldAnimate } handleClick={ handleClickCard }
                   isFlipped={ isFlipped }/>
-        <div className="mt-16">
+        <div className="mt-16 flex flex-row">
           <Input onChange={ handleInputChange } value={ input } placeholder="Type your answer"
                  onPressEnter={ handlePressEnter } highlightColor={ inputHighlightColor }/>
+          {isFlipped && isCorrect && (
+            <Button text="remove from pool" onClick={handleClickRemoveFromPool} color="bg-green-500 ml-5" />
+          )}
         </div>
         <div className="flex flex-row justify-center items-center mt-4 space-x-4">
           <Button text="prev" onClick={ handleClickPrev } color="bg-blue-500"/>
